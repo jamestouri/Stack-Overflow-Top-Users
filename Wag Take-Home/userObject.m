@@ -10,10 +10,10 @@
 @implementation UserObject
 -(instancetype)initWithDictionary:(NSDictionary *)user {
     if (self = [super init]) {
-        _userID = user[@"user_id"];
-        _badges = user[@"badges"];
-        _name = user[@"display_name"];
-        _image = user[@"image"];
+        self.userID = user[@"user_id"];
+        self.badges = user[@"badges"];
+        self.name = user[@"display_name"];
+        self.image = user[@"image"];
     }
     return self;
 }

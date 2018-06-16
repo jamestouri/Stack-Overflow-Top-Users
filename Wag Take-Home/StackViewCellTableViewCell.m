@@ -10,16 +10,16 @@
 
 @implementation StackViewCellTableViewCell
 
-@synthesize profilePicture = _profilePicture;
-@synthesize name = _name;
-
-@synthesize goldPicture = _goldPicture;
-@synthesize silverPicture = _silverPicture;
-@synthesize bronzeAmount = _bronzePicture;
-
-@synthesize goldAmount = _goldAmount;
-@synthesize silverAmount = _silverAmount;
-@synthesize bronzePicture = _bronzeAmount;
+//@synthesize profilePicture = _profilePicture;
+//@synthesize name = _name;
+//
+//@synthesize goldPicture = _goldPicture;
+//@synthesize silverPicture = _silverPicture;
+//@synthesize bronzeAmount = _bronzePicture;
+//
+//@synthesize goldAmount = _goldAmount;
+//@synthesize silverAmount = _silverAmount;
+//@synthesize bronzePicture = _bronzeAmount;
 
 - (void)awakeFromNib {
     [super awakeFromNib];

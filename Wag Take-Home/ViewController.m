@@ -14,7 +14,7 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) NSMutableArray *allUsers;
+@property (strong, nonatomic) NSMutableArray *allUsers;
 
 @end
 
@@ -24,13 +24,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _allUsers = [[NSMutableArray alloc] init];
-    // Do any additional setup after loading the view, typically from a nib.
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
+  
     
+    self.allUsers = [[NSMutableArray alloc] init];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    [self.tableView registerClass:[StackViewCellTableViewCell class] forCellReuseIdentifier:@"Cell"];
+
+//
     // Calling the UserObject Class
-    UserObject *user = [[UserObject alloc] init];
+    
     
     // Making the call
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -50,42 +54,22 @@
         
         
         for (NSDictionary *info in requestReply) {
+            
+            UserObject *user = [[UserObject alloc] init];
+            
             UIImage *img = [[UIImage alloc] init];
-            NSString *url = [[NSString alloc] init];
+            NSString *link = [[NSString alloc] init];
             
             user.userID = info[@"account_id"];
             user.badges = info[@"badge_counts"];
             user.name = info[@"display_name"];
-            url = info[@"display_name"];
+            link = info[@"display_name"];
             
-            @try {
-                
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                     NSUserDomainMask, YES);
-                NSString *documentsDirectory = paths.firstObject;
-                NSString *cname = [documentsDirectory stringByAppendingFormat:@"Profile-Images/%@.png", url];
-                
-                
-                img = [UIImage imageNamed:cname];
-                
-            }
-            
-            @catch (NSException *exception) {
-                // Get from JSON API
-                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
-                img = [UIImage imageWithData: imageData];
-                
-                //Store to documents
-                NSFileManager *fileManager= [NSFileManager defaultManager];
-                [[NSFileManager defaultManager] createFileAtPath:[NSString stringWithFormat:@"Profile-Images/%@.png", url] contents:nil attributes:nil];
-                [imageData writeToFile:[NSString stringWithFormat:@"Profile-Images/%@.png", url] atomically:YES];
-                
-            }
-            
-            @finally {
-                
-                user.image = img;
-            }
+            // Get from JSON API
+            NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
+            img = [UIImage imageWithData: imageData];
+
+            user.image = img;
             
             [tempArray addObject:user];
         }
@@ -97,8 +81,6 @@
         });
     }]
      resume];
-    
-    
 }
 
 
@@ -111,32 +93,33 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _allUsers.count;
+    return self.allUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *tableCell = @"Cell";
     
-    UserObject *theUser = _allUsers[indexPath.row];
+    UserObject *appointedUser = self.allUsers[indexPath.row];
                            
     StackViewCellTableViewCell *cell = (StackViewCellTableViewCell *)[tableView dequeueReusableCellWithIdentifier:tableCell];
+    
     if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"Cell" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
+        cell = [[StackViewCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:tableCell];
     }
     
     // Assigning the objects
-    cell.name.text = theUser.name;
+    cell.name.text = appointedUser.name;
     
-    cell.profilePicture.image = theUser.image;
+    cell.profilePicture.image = appointedUser.image;
     
-    cell.goldAmount.text = theUser.badges[@"gold"];
-    cell.silverAmount.text = theUser.badges[@"silver"];
-    cell.bronzeAmount.text = theUser.badges[@"bronze"];
-
+    cell.goldAmount.text = appointedUser.badges[@"gold"];
+    cell.silverAmount.text = appointedUser.badges[@"silver"];
+    cell.bronzeAmount.text = appointedUser.badges[@"bronze"];
+    
+    
+    NSLog(@"%@", appointedUser.name);
     return cell;
-    
 }
 
 @end

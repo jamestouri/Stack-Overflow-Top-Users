@@ -10,16 +10,16 @@
 
 @interface StackViewCellTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *profilePicture;
-@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (strong, nonatomic) IBOutlet UIImageView *profilePicture;
+@property (strong, nonatomic) IBOutlet UILabel *name;
 
-@property (weak, nonatomic) IBOutlet UIImageView *goldPicture;
-@property (weak, nonatomic) IBOutlet UIImageView *silverPicture;
-@property (weak, nonatomic) IBOutlet UIImageView *bronzePicture;
+@property (strong, nonatomic) IBOutlet UIImageView *goldPicture;
+@property (strong, nonatomic) IBOutlet UIImageView *silverPicture;
+@property (strong, nonatomic) IBOutlet UIImageView *bronzePicture;
 
-@property (weak, nonatomic) IBOutlet UILabel *goldAmount;
-@property (weak, nonatomic) IBOutlet UILabel *silverAmount;
-@property (weak, nonatomic) IBOutlet UILabel *bronzeAmount;
+@property (strong, nonatomic) IBOutlet UILabel *goldAmount;
+@property (strong, nonatomic) IBOutlet UILabel *silverAmount;
+@property (strong, nonatomic) IBOutlet UILabel *bronzeAmount;
 
 
 @end
