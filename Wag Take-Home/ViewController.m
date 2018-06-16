@@ -24,13 +24,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
     
     self.allUsers = [[NSMutableArray alloc] init];
     // Do any additional setup after loading the view, typically from a nib.
-    
-    
-    [self.tableView registerClass:[StackViewCellTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 
 //
     // Calling the UserObject Class
@@ -46,7 +44,8 @@
         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data
                                                              options:kNilOptions
                                                                error:&error];
-
+        
+        
         NSArray *requestReply = [json objectForKey:@"items"];
         // Putting inside Temporart Array
         NSMutableArray *tempArray = [[NSMutableArray alloc] init];
@@ -63,13 +62,15 @@
             user.userID = info[@"account_id"];
             user.badges = info[@"badge_counts"];
             user.name = info[@"display_name"];
-            link = info[@"display_name"];
             
+            link = info[@"profile_image"];
+            NSLog(@"%@", link);
             // Get from JSON API
             NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
             img = [UIImage imageWithData: imageData];
 
             user.image = img;
+            
             
             [tempArray addObject:user];
         }
@@ -77,7 +78,6 @@
             // After iterating through now putting in the global array
             self.allUsers = tempArray;
             [self.tableView reloadData];
-            
         });
     }]
      resume];
@@ -98,28 +98,32 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *tableCell = @"Cell";
+    
+    static NSString *tableCell = @"cell";
     
     UserObject *appointedUser = self.allUsers[indexPath.row];
-                           
-    StackViewCellTableViewCell *cell = (StackViewCellTableViewCell *)[tableView dequeueReusableCellWithIdentifier:tableCell];
+
+    StackViewCellTableViewCell *cell = (StackViewCellTableViewCell *)[tableView dequeueReusableCellWithIdentifier:tableCell forIndexPath:indexPath];
     
-    if (cell == nil) {
-        cell = [[StackViewCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:tableCell];
-    }
-    
+//    if (cell == nil)
+//    {
+//        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"cell" owner:self options:nil];
+//        cell = [nib objectAtIndex:0];
+//    }
+
     // Assigning the objects
     cell.name.text = appointedUser.name;
-    
+
     cell.profilePicture.image = appointedUser.image;
     
-    cell.goldAmount.text = appointedUser.badges[@"gold"];
-    cell.silverAmount.text = appointedUser.badges[@"silver"];
-    cell.bronzeAmount.text = appointedUser.badges[@"bronze"];
-    
-    
-    NSLog(@"%@", appointedUser.name);
+//    cell.goldAmount.text = appointedUser.badges[@"gold"];
+//    cell.silverAmount.text = appointedUser.badges[@"silver"];
+//    cell.bronzeAmount.text = appointedUser.badges[@"bronze"];
+//
+//    NSLog(@"%@", appointedUser.badges[@"gold"]);
     return cell;
 }
+
+
 
 @end
