@@ -14,6 +14,8 @@
         self.badges = user[@"badges"];
         self.name = user[@"display_name"];
         self.image = user[@"image"];
+        
+    
     }
     return self;
 }
