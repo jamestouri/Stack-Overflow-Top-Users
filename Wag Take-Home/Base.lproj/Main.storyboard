@@ -96,6 +96,9 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mhG-jU-0UJ">
+                                                    <rect key="frame" x="42" y="42" width="20" height="20"/>
+                                                </activityIndicatorView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6qk-Zh-r7V">
                                                     <rect key="frame" x="12" y="12" width="81" height="80"/>
                                                     <constraints>
@@ -106,19 +109,24 @@
                                             <constraints>
                                                 <constraint firstItem="6qk-Zh-r7V" firstAttribute="leading" secondItem="QuI-Ct-6Wy" secondAttribute="leading" id="8o4-0m-Rxf"/>
                                                 <constraint firstItem="UzE-rg-CeS" firstAttribute="leading" secondItem="6qk-Zh-r7V" secondAttribute="trailing" constant="16" id="8zI-qb-Ei4"/>
+                                                <constraint firstItem="UzE-rg-CeS" firstAttribute="leading" secondItem="mhG-jU-0UJ" secondAttribute="trailing" constant="47" id="Dep-1m-ceV"/>
                                                 <constraint firstAttribute="bottom" secondItem="QuI-Ct-6Wy" secondAttribute="bottom" constant="82.5" id="Mo1-xM-cIW"/>
                                                 <constraint firstItem="6qk-Zh-r7V" firstAttribute="leading" secondItem="rMo-jC-XGP" secondAttribute="leadingMargin" constant="-3" id="TK5-TF-bMC"/>
+                                                <constraint firstItem="mhG-jU-0UJ" firstAttribute="leading" secondItem="rMo-jC-XGP" secondAttribute="leadingMargin" constant="27" id="Yjr-vq-09k"/>
                                                 <constraint firstItem="UzE-rg-CeS" firstAttribute="leading" secondItem="rMo-jC-XGP" secondAttribute="leading" constant="109" id="buR-nM-BFZ"/>
                                                 <constraint firstItem="6qk-Zh-r7V" firstAttribute="top" secondItem="rMo-jC-XGP" secondAttribute="topMargin" constant="1" id="cR2-bR-ZF9"/>
                                                 <constraint firstAttribute="trailing" secondItem="UzE-rg-CeS" secondAttribute="trailing" id="oC4-cy-4EO"/>
+                                                <constraint firstItem="mhG-jU-0UJ" firstAttribute="top" secondItem="rMo-jC-XGP" secondAttribute="topMargin" constant="31" id="opr-Zj-NXu"/>
                                                 <constraint firstItem="6qk-Zh-r7V" firstAttribute="top" secondItem="rMo-jC-XGP" secondAttribute="top" constant="12" id="qYi-HN-Gzm"/>
                                                 <constraint firstItem="UzE-rg-CeS" firstAttribute="top" secondItem="rMo-jC-XGP" secondAttribute="top" id="sVS-fh-tIY"/>
                                                 <constraint firstItem="QuI-Ct-6Wy" firstAttribute="top" secondItem="6qk-Zh-r7V" secondAttribute="bottom" constant="8" symbolic="YES" id="voz-jz-Ldl"/>
                                                 <constraint firstItem="6qk-Zh-r7V" firstAttribute="leading" secondItem="rMo-jC-XGP" secondAttribute="leading" constant="12" id="wV1-lG-JSt"/>
                                                 <constraint firstItem="UzE-rg-CeS" firstAttribute="centerY" secondItem="rMo-jC-XGP" secondAttribute="centerY" id="zBV-HZ-JkR"/>
+                                                <constraint firstItem="QuI-Ct-6Wy" firstAttribute="top" secondItem="mhG-jU-0UJ" secondAttribute="bottom" constant="38" id="zf8-fS-2hh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="mhG-jU-0UJ" id="P9k-P3-UUO"/>
                                             <outlet property="bronzeAmount" destination="2K4-XP-az3" id="hHX-2g-bna"/>
                                             <outlet property="bronzePicture" destination="UOt-jC-S6F" id="VAa-3a-f7a"/>
                                             <outlet property="goldAmount" destination="KZJ-x6-7OT" id="ltP-Yo-O6T"/>

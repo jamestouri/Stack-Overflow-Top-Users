@@ -25,6 +25,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    //Started the activity indicator here
+    StackViewCellTableViewCell *cell = [[StackViewCellTableViewCell alloc] init];
+    [cell.activityIndicator startAnimating];
+    
     self.allUsers = [[NSMutableArray alloc] init];
     // Do any additional setup after loading the view, typically from a nib.
     self.tableView.delegate = self;
@@ -53,6 +58,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    
     static NSString *tableCell = @"cell";
     
     UserObject *appointedUser = self.allUsers[indexPath.row];
@@ -61,7 +67,9 @@
     
     // Assigning the objects
     cell.name.text = appointedUser.name;
-
+    
+    // Stopping activity indicator when image runs
+    [cell.activityIndicator stopAnimating];
     cell.profilePicture.image = appointedUser.image;
     
     // Values were Int type

@@ -13,6 +13,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profilePicture;
 @property (weak, nonatomic) IBOutlet UILabel *name;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+
 
 @property (weak, nonatomic) IBOutlet UIImageView *goldPicture;
 @property (weak, nonatomic) IBOutlet UIImageView *silverPicture;
