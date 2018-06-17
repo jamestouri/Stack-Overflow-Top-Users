@@ -109,31 +109,14 @@
             user.badges = info[@"badge_counts"];
             user.name = info[@"display_name"];
             
-            
+            // Unique paths for the Documents Directory
             NSString *picturePath = [[NSString alloc] init];
-            picturePath = @"/Profile-Images/%@.png", user.name;
-
-            if ([UIImage imageNamed:picturePath]) {
-                NSLog(@"checking");
-                img = [UIImage imageNamed:picturePath];
-            } else {
-                
-                link = info[@"profile_image"];
-              
-                // Get from JSON API
-                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
-                img = [UIImage imageWithData: imageData];
-                
-                NSData *imagePng = UIImagePNGRepresentation(img);
-
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *documentsDirectory = [paths objectAtIndex:0];
-                
-                NSString *imagePath =[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:picturePath]];
-                [imagePng writeToFile:imagePath atomically:NO];
-                NSLog(@"%@", imagePath);
-            }
+            picturePath = [NSString stringWithFormat:@"%@.png", user.name];
             
+            link = info[@"profile_image"];
+
+            // Calling the finding image function
+            img = [self findingImage: (NSString *) picturePath givenLink: (NSString *) link ];
             
             user.image = img;
             
@@ -147,6 +130,72 @@
         });
     }]
      resume];
+}
+
+#pragma mark - findingImage
+
+
+-(UIImage *) findingImage: (NSString *) picturePath givenLink: (NSString *) link {
+    
+    UIImage *image = [[UIImage alloc] init];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //create an array and store result of our search for the documents directory in it
+    
+    NSString *documentsDirectory = [paths lastObject]; //create NSString object, that holds our exact path to the documents directory
+    NSString *workSpacePath=[documentsDirectory stringByAppendingPathComponent:picturePath];
+
+    // If images haven't been downloaded then download them from the web for future offline use
+    if  ([UIImage imageWithData:[NSData dataWithContentsOfFile:workSpacePath]] == nil) {
+    
+        
+        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
+        image = [UIImage imageWithData: imageData];
+        
+        NSData *dataImage = UIImagePNGRepresentation(image);
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:picturePath];
+        [fileManager createFileAtPath:fullPath contents:dataImage attributes:nil];
+        
+    } else {
+        
+        // If the photos are saved for retrieval in the documents directory
+        image = [UIImage imageWithContentsOfFile:workSpacePath];
+        
+    }
+
+    
+    
+    
+//    NSString *filePath = picturePath;
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//        NSLog(@"it exists");
+//        NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//
+//        NSString *pngFilePath = [NSString stringWithFormat:@"%@/%@", docDir, picturePath];
+//
+//        NSData *dataImage = [NSData dataWithContentsOfFile:pngFilePath];
+//        UIImage *image = [UIImage imageWithData:dataImage];
+//        return image;
+//
+//    } else {
+//        NSLog(@"doesn't exist");
+//        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
+//        UIImage *image = [UIImage imageWithData: imageData];
+//
+//
+//        NSString *documentaryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//        NSString *filePath = [NSString stringWithFormat:picturePath,documentaryPath];
+//        NSData *data = [NSData dataWithData:UIImagePNGRepresentation(image)];
+//        [data writeToFile:filePath atomically:YES];
+//        return image;
+//
+//    }
+//
+    
+    return image;
+    
 }
 
 

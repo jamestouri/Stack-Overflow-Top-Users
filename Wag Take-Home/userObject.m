@@ -8,6 +8,7 @@
 
 #import "userObject.h"
 @implementation UserObject
+
 -(instancetype)initWithDictionary:(NSDictionary *)user {
     if (self = [super init]) {
         self.userID = user[@"user_id"];
