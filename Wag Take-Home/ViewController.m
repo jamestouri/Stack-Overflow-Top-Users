@@ -31,7 +31,6 @@
     self.tableView.dataSource = self;
 
     
-    
     // Making the call from the StackExchange Data
     [self jsonCall];
     
@@ -103,12 +102,26 @@
             user.name = info[@"display_name"];
             
             
+            NSString *picturePath = [[NSString alloc] init];
+            picturePath = @"/Profile-Images/%@.png", user.userID;
             
-            link = info[@"profile_image"];
-            NSLog(@"%@", link);
-            // Get from JSON API
-            NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
-            img = [UIImage imageWithData: imageData];
+            
+            if ([self fileExistsInProject:picturePath]) {
+               
+                img = [[UIImage alloc] initWithContentsOfFile:picturePath];;
+            } else {
+                
+                NSLog(@"falsified");
+                link = info[@"profile_image"];
+              
+                // Get from JSON API
+                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
+                img = [UIImage imageWithData: imageData];
+                
+                NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+                documentsURL = [documentsURL URLByAppendingPathComponent:picturePath];
+            }
+            
             
             user.image = img;
             
@@ -122,6 +135,15 @@
         });
     }]
      resume];
+}
+
+
+-(BOOL) fileExistsInProject:(NSString *)fileName {
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *fileInResourcesFolder = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
+    return [fileManager fileExistsAtPath:fileInResourcesFolder];
+    
 }
 
 @end
