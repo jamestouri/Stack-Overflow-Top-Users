@@ -7,6 +7,7 @@
 //
 
 #import "userObject.h"
+
 @implementation UserObject
 
 -(instancetype)initWithDictionary:(NSDictionary *)user {

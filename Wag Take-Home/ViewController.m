@@ -47,7 +47,6 @@
 }
 
 
-
 // Table View Functions
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -80,6 +79,7 @@
     return cell;
 }
 
+#pragma mark - JSON Call
 
 // JSON Call for the Stack Exchange API
 -(void) jsonCall {
@@ -138,23 +138,18 @@
 -(UIImage *) findingImage: (NSString *) picturePath givenLink: (NSString *) link {
     
     UIImage *image = [[UIImage alloc] init];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //create an array and store result of our search for the documents directory in it
-    
-    NSString *documentsDirectory = [paths lastObject]; //create NSString object, that holds our exact path to the documents directory
+    //create an array and store result of our search for the documents directory in it
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths lastObject];
     NSString *workSpacePath=[documentsDirectory stringByAppendingPathComponent:picturePath];
-
+    
     // If images haven't been downloaded then download them from the web for future offline use
     if  ([UIImage imageWithData:[NSData dataWithContentsOfFile:workSpacePath]] == nil) {
     
-        
         NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
         image = [UIImage imageWithData: imageData];
-        
         NSData *dataImage = UIImagePNGRepresentation(image);
-        
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        
         NSString *fullPath = [documentsDirectory stringByAppendingPathComponent:picturePath];
         [fileManager createFileAtPath:fullPath contents:dataImage attributes:nil];
         
@@ -165,35 +160,6 @@
         
     }
 
-    
-    
-    
-//    NSString *filePath = picturePath;
-//    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-//        NSLog(@"it exists");
-//        NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//
-//        NSString *pngFilePath = [NSString stringWithFormat:@"%@/%@", docDir, picturePath];
-//
-//        NSData *dataImage = [NSData dataWithContentsOfFile:pngFilePath];
-//        UIImage *image = [UIImage imageWithData:dataImage];
-//        return image;
-//
-//    } else {
-//        NSLog(@"doesn't exist");
-//        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
-//        UIImage *image = [UIImage imageWithData: imageData];
-//
-//
-//        NSString *documentaryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//        NSString *filePath = [NSString stringWithFormat:picturePath,documentaryPath];
-//        NSData *data = [NSData dataWithData:UIImagePNGRepresentation(image)];
-//        [data writeToFile:filePath atomically:YES];
-//        return image;
-//
-//    }
-//
-    
     return image;
     
 }

@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface UserObject : NSObject
 
 @property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSDictionary *badges;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *image;
+@property (nonatomic, strong) UIImage *image;
 
 
 -(instancetype)initWithDictionary:(NSDictionary *)user;
