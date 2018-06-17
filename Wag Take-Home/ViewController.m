@@ -36,7 +36,7 @@
     self.tableView.dataSource = self;
 
     
-    // Making the call from the StackExchange Data
+    // Making the call from StackExchange Endpoint API
     [self jsonCall];
     
 }
@@ -111,23 +111,27 @@
             
             
             NSString *picturePath = [[NSString alloc] init];
-            picturePath = @"/Profile-Images/%@.png", user.userID;
-            
-            
-            if ([self fileExistsInProject:picturePath]) {
-               
-                img = [[UIImage alloc] initWithContentsOfFile:picturePath];;
+            picturePath = @"/Profile-Images/%@.png", user.name;
+
+            if ([UIImage imageNamed:picturePath]) {
+                NSLog(@"checking");
+                img = [UIImage imageNamed:picturePath];
             } else {
                 
-                NSLog(@"falsified");
                 link = info[@"profile_image"];
               
                 // Get from JSON API
                 NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: link]];
                 img = [UIImage imageWithData: imageData];
                 
-                NSURL *documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-                documentsURL = [documentsURL URLByAppendingPathComponent:picturePath];
+                NSData *imagePng = UIImagePNGRepresentation(img);
+
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsDirectory = [paths objectAtIndex:0];
+                
+                NSString *imagePath =[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:picturePath]];
+                [imagePng writeToFile:imagePath atomically:NO];
+                NSLog(@"%@", imagePath);
             }
             
             
@@ -146,12 +150,5 @@
 }
 
 
--(BOOL) fileExistsInProject:(NSString *)fileName {
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *fileInResourcesFolder = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:fileName];
-    return [fileManager fileExistsAtPath:fileInResourcesFolder];
-    
-}
 
 @end
